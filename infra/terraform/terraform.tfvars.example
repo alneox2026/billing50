@@ -17,17 +17,18 @@ billing_api_stripe_webhook_signing_secret_id = "" # Leave empty initially until 
 billing_reconciliation_enabled = true
 billing_reconciliation_schedule = "0 * * * *"
 
-# Canonical shared collections used by the middleware templates by default.
-firestore_customer_wallets_collection                   = "customer_wallets_v3"
-firestore_wallet_transactions_collection                = "wallet_transactions_v3"
-firestore_customer_billing_periods_collection           = "customer_billing_periods_v3"
-firestore_customer_billing_accounts_collection          = "customer_billing_accounts_v3"
-firestore_stripe_webhook_events_collection              = "stripe_webhook_events_v3"
-firestore_subscription_cancellation_requests_collection = "subscription_cancellation_requests_v3"
+# Shared collections for this billing50 cluster. Configure each middleware to
+# use the same wallet, transaction, and billing-period collection names.
+firestore_customer_wallets_collection                   = "customer_wallets_billing50"
+firestore_wallet_transactions_collection                = "wallet_transactions_billing50"
+firestore_customer_billing_periods_collection           = "customer_billing_periods_billing50"
+firestore_customer_billing_accounts_collection          = "customer_billing_accounts_billing50"
+firestore_stripe_webhook_events_collection              = "stripe_webhook_events_billing50"
+firestore_subscription_cancellation_requests_collection = "subscription_cancellation_requests_billing50"
 
 # Allowed CORS Origins
 billing_api_allowed_origins = ["https://ceoappdev.flutterflow.app"]
 
 # Stripe Checkout Redirect URLs
-billing_api_checkout_success_url = "https://app.example.com/billing/success?session_id={CHECKOUT_SESSION_ID}"
-billing_api_checkout_cancel_url  = "https://app.example.com/billing/cancel"
+billing_api_checkout_success_url = "https://ceoappdev.flutterflow.app/billing-complete?session_id={CHECKOUT_SESSION_ID}"
+billing_api_checkout_cancel_url  = "https://ceoappdev.flutterflow.app/billing/cancel"

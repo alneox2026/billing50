@@ -227,7 +227,7 @@ Follow this checklist before approving and executing a live production rollout:
 3. **Stripe Checkout Return URLs**:
    * Set your real client application redirect URLs so users return to your web/mobile app rather than `example.com` after completing or cancelling Stripe Checkout:
      ```bash
-     export CHECKOUT_SUCCESS_URL="https://app.yourdomain.com/billing/success?session_id={CHECKOUT_SESSION_ID}"
+     export CHECKOUT_SUCCESS_URL="https://app.yourdomain.com/billing-complete?session_id={CHECKOUT_SESSION_ID}"
      export CHECKOUT_CANCEL_URL="https://app.yourdomain.com/billing/cancel"
      ```
 

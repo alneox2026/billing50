@@ -77,6 +77,7 @@ def test_deploy_script_uses_stack_isolation_and_terraform_collection_values() ->
     script = (ROOT / "scripts" / "cloudshell_deploy_billing.sh").read_text()
     variables = (ROOT / "infra" / "terraform" / "variables.tf").read_text()
     terraform_locals = (ROOT / "infra" / "terraform" / "locals.tf").read_text()
+    tfvars_example = (ROOT / "infra" / "terraform" / "terraform.tfvars.example").read_text()
 
     assert 'source "${SCRIPT_DIR}/billing_stack.sh"' in script or '. "${SCRIPT_DIR}/billing_stack.sh"' in script
     assert 'TF_STATE_PREFIX="${TF_STATE_PREFIX:-${DEFAULT_TF_STATE_PREFIX}}"' in script
@@ -99,7 +100,21 @@ def test_deploy_script_uses_stack_isolation_and_terraform_collection_values() ->
         )
         assert f'if [ -n "${{{environment_name}:-}}" ]; then' in script
         assert f'{terraform_name}=${{{environment_name}}}' in script
-        assert f'default     = "{terraform_name.removeprefix("firestore_")[:-len("_collection")]}_v3"' in variables
+        variable_block = re.search(
+            rf'variable "{re.escape(terraform_name)}"\s*\{{(?P<body>.*?)\n\}}',
+            variables,
+            re.DOTALL,
+        )
+        assert variable_block is not None
+        default = re.search(r'default\s*=\s*"([^"]+)"', variable_block.group("body"))
+        example_value = re.search(
+            rf"^{re.escape(terraform_name)}\s*=\s*\"([^\"]+)\"",
+            tfvars_example,
+            re.MULTILINE,
+        )
+        assert default is not None
+        assert example_value is not None
+        assert default.group(1) == example_value.group(1)
     assert "ALLOW_SHARED_BILLING_TERRAFORM_STATE" in script
 
 

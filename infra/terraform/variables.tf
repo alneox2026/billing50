@@ -137,7 +137,7 @@ variable "billing_api_catalog_path" {
 variable "billing_api_checkout_success_url" {
   description = "Client redirect URL when Stripe Checkout completes."
   type        = string
-  default     = "https://ceoappdev.flutterflow.app/billing/success?session_id={CHECKOUT_SESSION_ID}"
+  default     = "https://ceoappdev.flutterflow.app/billing-complete?session_id={CHECKOUT_SESSION_ID}"
 }
 
 variable "billing_api_checkout_cancel_url" {
